@@ -1,0 +1,22 @@
+{
+  "name": "bcc-web-redemption",
+  "version": "0.0.1",
+  "description": "Simple BitcoinCash web wallet.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "build": "cd bitcoinjs-lib && git checkout opt-in-bitcoincash-sighash && npm install && cd .. && browserify bitcoinjs_browserify.js --standalone bccr > ./public/bitcoin.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "async": "^2.5.0",
+    "bigi": "^1.4.2",
+    "browserify": "^14.4.0",
+    "bs58": "^4.0.1",
+    "ecurve": "^1.0.5",
+    "express": "^4.15.3",
+    "request": "^2.81.0"
+  }
+}

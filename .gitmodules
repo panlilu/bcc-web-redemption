@@ -1,0 +1,3 @@
+[submodule "bitcoinjs-lib"]
+	path = bitcoinjs-lib
+	url = git@github.com:afk11/bitcoinjs-lib.git
