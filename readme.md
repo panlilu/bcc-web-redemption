@@ -4,8 +4,6 @@ Simple BitcoinCash web wallet.
 
 Your private key won't go out from your browser.
 
-THIS PROJECT IS NOT WORKING CURRENT.
-
 Unspent data is from https://blockchair.com/.
 
 You can edit your unspent or paste from any other resource as you wish.
