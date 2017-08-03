@@ -20,7 +20,7 @@ npm run build
 ## run
 ```
 npm install
-npm run
+npm start
 
 open 127.0.0.1:4500 in your browser
 ```
