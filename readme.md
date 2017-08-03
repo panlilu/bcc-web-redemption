@@ -2,7 +2,7 @@
 
 Simple BitcoinCash web wallet.
 
-Your private key won't go our from your browser.
+Your private key won't go out from your browser.
 
 THIS PROJECT IS NOT WORKING CURRENT.
 
