@@ -1,4 +1,4 @@
-#BCC web redemption
+# BCC web redemption
 
 Simple BitcoinCash web wallet.
 
