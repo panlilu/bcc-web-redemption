@@ -72,7 +72,8 @@
           var txId = selected_unspent[i]["tx_hash_big_endian"];
           total_inputs = total_inputs.plus(selected_unspent[i]["value"]);
           console.log(spk);
-          tx.addInput(txId, selected_unspent[i]["tx_output_n"], bccr.bitcoin.Transaction.DEFAULT_SEQUENCE, spk);
+          //tx.addInput(txId, selected_unspent[i]["tx_output_n"], bccr.bitcoin.Transaction.DEFAULT_SEQUENCE, spk);
+          tx.addInput(txId, selected_unspent[i]["tx_output_n"]);
         }
 
         var array = CSV.csvToArray($("#csv").val());
