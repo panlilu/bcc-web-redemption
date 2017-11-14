@@ -12,6 +12,8 @@ After making raw transaction, broadcast it to https://pool.viabtc.com/tools/BCC/
 
 ## build it
 ```
+git clone --recursive git@github.com:panlilu/bcc-web-redemption.git
+cd bcc-web-redemption
 npm install
 npm run build
 ```
