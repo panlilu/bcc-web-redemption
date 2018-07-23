@@ -29,13 +29,10 @@
           var pk_bigi = bccr.BigInteger.fromBuffer(pk_buffer);
           key_pair = new bccr.bitcoin.ECPair(pk_bigi, null, {compressed: $('#is_compressed').prop("checked")});
           selected_addr = key_pair.getAddress();
-          console.log(selected_addr);
           $('#addr-label').text('Your address:' + selected_addr);
           $('.step2').show();
           $.get('/unspent/'+ selected_addr, function(data){
-            console.log(data);
             unspent = JSON.parse(data);
-            console.log(unspent);
             var total = new BigNumber(0);
             for(var i=0;i<unspent.length;i++ ){
               var satoshi = new BigNumber(unspent[i]["value"]);
@@ -55,7 +52,6 @@
         var selected_unspent = JSON.parse($('#inputs').val());
 
         var return_addr = selected_addr;
-        console.log(return_addr);
 
         var tx_fee_btc = new BigNumber($('#tx-fee').val());
         var tx_fee = tx_fee_btc.times(100000000);
@@ -63,16 +59,11 @@
         var tx = new bccr.bitcoin.TransactionBuilder(network);
         var pubk = key_pair.getPublicKeyBuffer();
         var spk = bccr.bitcoin.script.pubKey.output.encode(pubk);
-        console.log('hahah');
-        console.log(spk);
 
         var total_inputs = new BigNumber(0);
         for(var i=0;i<selected_unspent.length;i++ ){
-          console.log(selected_unspent);
           var txId = selected_unspent[i]["tx_hash_big_endian"];
           total_inputs = total_inputs.plus(selected_unspent[i]["value"]);
-          console.log(spk);
-          //tx.addInput(txId, selected_unspent[i]["tx_output_n"], bccr.bitcoin.Transaction.DEFAULT_SEQUENCE, spk);
           tx.addInput(txId, selected_unspent[i]["tx_output_n"]);
         }
 
@@ -86,7 +77,6 @@
           tx.addOutput(array[i][0], satoshi.toNumber());
         }
         var returns = total_inputs.minus(outs).minus(tx_fee);
-        console.log(returns.toNumber());
         if (returns.toNumber() < 0) {
           throw new Error('balance not enough');
         }
@@ -95,17 +85,7 @@
         }
 
         tx.enableBitcoinCash(true);
-        //tx.setVersion(2);
-
-        console.log(outs.toNumber());
-        console.log(tx_fee.toNumber());
-        console.log(returns.toNumber());
-
-        console.log(key_pair.getAddress());
-        console.log(tx);
-        var hashType = bccr.bitcoin.Transaction.SIGHASH_ALL | bccr.bitcoin.Transaction.SIGHASH_BITCOINCASHBIP143;
-
-        for(var i=0;i<selected_unspent.length;i++ ){
+          for(var i=0;i<selected_unspent.length;i++ ){
           var input_amout = new BigNumber(selected_unspent[i]["value"]);
           tx.sign(i, key_pair, null, hashType, input_amout.toNumber());
         }
@@ -118,8 +98,6 @@
 
         $("#summary").html(summary);
         window.tx_build = tx_build;
-        console.log(tx_build);
-        console.log(tx_build.toHex());
         $('#raw').val(tx_build.toHex());
       }
       $(document).ready(function(){
@@ -139,7 +117,7 @@
     </script>
   </head>
   <body>
-    <h1>BCC web redemption</h1>
+    <h1>BCC(BCH) web redemption</h1>
     <p>THIS IS AN OPENSOURCE FREE SOFTWARE WITHOUT ANY GUARANTEE！</p>
     <div class="privatekey">
       <label for="privatekey_input">privateKey base58</label>
@@ -158,7 +136,7 @@
         <span id="addr-label"></span>
       </div>
       <div>
-        <span>Total:</span><span id="total">0</span> BCC
+        <span>Total:</span><span id="total">0</span> BCH
       </div>
       <div class="">
         <label for="inputs">Inputs (Json array, blockchain.info unspent format)</label>
@@ -172,7 +150,7 @@
       </div>
       <hr>
         <label for="tx-fee">Tx fee</label>
-        <input type="text" id="tx-fee" value="0.0001"> BCC
+        <input type="text" id="tx-fee" value="0.0001"> BCH
       <hr>
       <div id="summary">Raw Transaction</div>
       <textarea rows="8" cols="40" id="raw"></textarea>

@@ -22,43 +22,24 @@ app.get('/unspent/:selected_addr', function(req,res){
     return;
   }
   var result = [];
-  request('https://api.blockchair.com/bitcoin-cash/outputs?q=recipient('+ selected_addr +'),is_spent(0)', function (error, response, body) {
+  request('https://bch-chain.api.btc.com/v3/address/'+ selected_addr +'/unspent', function(error, response, body){
     console.log('error:', error); // Print the error if one occurred
     console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
     console.log('body:', body); // Print the HTML for the Google homepage.
-    var unspents = JSON.parse(body).data;
-    console.log(unspents);
-    async.eachSeries(unspents, function(u, callback) {
-      console.log(u)
-      console.log(u.transaction_id)
-      request('https://api.blockchair.com/bitcoin-cash/transactions?q=id('+ u.transaction_id +')', function(err, res, body) {
-          // do something
-          console.log(body);
-          var txhash = JSON.parse(body).data[0].hash;
-          u.txhash = txhash;
-          callback();
+    var unspents = JSON.parse(body).data.list
+    unspents.forEach(function(u){
+      result.push({
+        "tx_hash_big_endian": u.tx_hash,
+        "tx_hash": reverseString(u.tx_hash),
+        "value": u.value,
+        "tx_output_n": u.tx_output_n
       });
-    }, function done(err) {
-        // do something
-        console.log(unspents);
-        unspents.forEach(function(u){
-          result.push({
-            "tx_hash_big_endian": u.txhash,
-            "tx_hash": reverseString(u.txhash),
-            "value": u.value,
-            "tx_output_n": u.index
-          });
-        });
-        res.send(JSON.stringify(result));
-        console.log(result);
-        console.log('all done!');
-    })
-    // unspents.forEach(function(u){
-    //   request('https://api.blockchair.com/bitcoin-cash/transactions?q=id('+ u.transaction_id +')', function(){
-    //
-    //   });
-    // });
+    });
+    res.send(JSON.stringify(result));
+    console.log(result);
+    console.log('all done!');
   });
+
 })
 
 app.listen(4500, function () {
